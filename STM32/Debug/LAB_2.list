@@ -35,15 +35,15 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_ranges 000008b0  00000000  00000000  0002a518  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_macro  0001629a  00000000  00000000  0002adc8  2**0
+ 16 .debug_macro  0001628e  00000000  00000000  0002adc8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   000098f7  00000000  00000000  00041062  2**0
+ 17 .debug_line   000098f7  00000000  00000000  00041056  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00081ed6  00000000  00000000  0004a959  2**0
+ 18 .debug_str    00081ec6  00000000  00000000  0004a94d  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000cc82f  2**0
+ 19 .comment      00000053  00000000  00000000  000cc813  2**0
                   CONTENTS, READONLY
- 20 .debug_frame  00002674  00000000  00000000  000cc884  2**2
+ 20 .debug_frame  00002674  00000000  00000000  000cc868  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -113,11 +113,10 @@ int main(void)
   HAL_TIM_Base_Start_IT(&htim2);
  8000162:	4829      	ldr	r0, [pc, #164]	; (8000208 <main+0xbc>)
  8000164:	f001 fb46 	bl	80017f4 <HAL_TIM_Base_Start_IT>
+  /* USER CODE END 2 */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-#define LED_0 0
-#define LED_1 1
-
   setTimer1(50);
  8000168:	2032      	movs	r0, #50	; 0x32
  800016a:	f000 faf1 	bl	8000750 <setTimer1>
@@ -132,7 +131,7 @@ int main(void)
  8000178:	2302      	movs	r3, #2
  800017a:	607b      	str	r3, [r7, #4]
 
-  int led_status = LED_0;
+  int led_status = 0;
  800017c:	2300      	movs	r3, #0
  800017e:	60fb      	str	r3, [r7, #12]
 

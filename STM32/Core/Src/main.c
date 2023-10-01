@@ -94,22 +94,19 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-#define LED_0 0
-#define LED_1 1
-
   setTimer1(50);
   setTimer2(100);
 
   int led0 = 1;
   int led1 = 2;
 
-  int led_status = LED_0;
+  int led_status = 0;
 
   while (1)
   {
 	  switch (led_status)
 	  {
-	  case LED_0:
+	  case 0:
 		  // enable led 0 and disable led 1
 		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
 		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
@@ -121,7 +118,7 @@ int main(void)
 		  }
 		  break;
 
-	  case LED_1:
+	  case 1:
 		  // enable led 1 and disable led 0
 		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
 		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
