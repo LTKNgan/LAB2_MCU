@@ -52,6 +52,12 @@ static void MX_TIM2_Init(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
 void display7SEG(int num);
+void update7SEG(int index);
+
+const int MAX_LED = 4;
+int index_led = 0;
+int led_buffer[4] = {1, 2, 3, 4};
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -95,91 +101,20 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   setTimer1(50);
-  setTimer2(100);
-  setTimer3(100);
-
-  int led0 = 1;
-  int led1 = 2;
-  int led2 = 3;
-  int led3 = 0;
-
-  int led_status = 0;
+  int count = 0;
 
   while (1)
   {
-	  switch (led_status)
+	  if (timer1_flag)
 	  {
-	  case 0:
-		  // enable led 0 and disable led 1, 2, 3
-		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
-		  display7SEG(led0);
-		  if (timer1_flag == 1)
-		  {
-			  setTimer1(50);
-			  led_status = 1;
-		  }
-		  break;
-
-	  case 1:
-		  // enable led 1 and disable led 0, 2, 3
-		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
-		  display7SEG(led1);
-		  if (timer1_flag == 1)
-		  {
-			  setTimer1(50);
-			  led_status = 2;
-		  }
-		  break;
-
-	  case 2:
-		  // enable led 2 and disable led 0, 1, 3
-		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_RESET);
-		  HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
-		  display7SEG(led2);
-		  if (timer1_flag == 1)
-		  {
-			  setTimer1(50);
-			  led_status = 3;
-		  }
-		  break;
-
-	  case 3:
-		  // enable led 1 and disable led 0, 2, 3
-		  HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
-		  HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_RESET);
-		  display7SEG(led3);
-		  if (timer1_flag == 1)
-		  {
-			  setTimer1(50);
-			  led_status = 0;
-		  }
-		  break;
-
-	  default:
-		  break;
+		  setTimer1(50);
+		  if (index_led >= MAX_LED) index_led = 0;
+		  if (count > 9) count = 0;
+		  led_buffer[index_led] = count++;
+		  update7SEG(index_led++);
 	  }
 
-	  if (timer2_flag)
-	  {
-		  setTimer2(100);
-		  HAL_GPIO_TogglePin(RED_LED_GPIO_Port, RED_LED_Pin);
-	  }
 
-	  if (timer3_flag)
-	  {
-		  setTimer3(100);
-		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
-	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -286,7 +221,7 @@ static void MX_GPIO_Init(void)
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOB, sm_a_Pin|sm_b_Pin|sm_c_Pin|sm_d_Pin
-                          |sm_e_Pin|sm_f_Pin|sm_g_Pin, GPIO_PIN_RESET);
+                          |sm_e_Pin|sm_f_Pin|sm_g_Pin, GPIO_PIN_SET);
 
   /*Configure GPIO pins : DOT_Pin RED_LED_Pin EN0_Pin EN1_Pin
                            EN2_Pin EN3_Pin */
@@ -429,6 +364,50 @@ void display7SEG(int num)
 		break;
 	}
 }
+
+void update7SEG(int index){
+    switch (index){
+        case 0:
+        	// enable led 0 and disable led 1, 2, 3
+        	HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_RESET);
+        	HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+            display7SEG(led_buffer[0]);
+            break;
+
+        case 1:
+        	// enable led 1 and disable led 0, 2, 3
+        	HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_RESET);
+        	HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+            display7SEG(led_buffer[1]);
+            break;
+
+        case 2:
+        	// enable led 2 and disable led 0, 1, 3
+        	HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_RESET);
+        	HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_SET);
+            display7SEG(led_buffer[2]);
+            break;
+
+        case 3:
+        	// enable led 3 and disable led 0, 1, 2
+        	HAL_GPIO_WritePin(EN0_GPIO_Port, EN0_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN1_GPIO_Port, EN1_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN2_GPIO_Port, EN2_Pin, GPIO_PIN_SET);
+        	HAL_GPIO_WritePin(EN3_GPIO_Port, EN3_Pin, GPIO_PIN_RESET);
+            display7SEG(led_buffer[3]);
+            break;
+
+        default:
+            break;
+    }
+}
+
 /* USER CODE END 4 */
 
 /**
