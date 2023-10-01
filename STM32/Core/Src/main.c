@@ -57,6 +57,9 @@ void update7SEG(int index);
 const int MAX_LED = 4;
 int index_led = 0;
 int led_buffer[4] = {1, 2, 3, 4};
+int hour = 15, min = 8, sec = 50;
+
+void updateClockBuffer();
 
 /* USER CODE END PFP */
 
@@ -100,24 +103,38 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(25);
-  setTimer2(100);
-  int count = 0;
+  setTimer1(100);
+  setTimer2(25);
 
   while (1)
   {
 	  if (timer1_flag)
 	  {
-		  setTimer1(25);
-		  if (index_led >= MAX_LED) index_led = 0;
-		  if (count > 9) count = 0;
-		  led_buffer[index_led] = count++;
-		  update7SEG(index_led++);
+		  setTimer1(100);
+		  sec++;
+		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+		  if (sec >= 60) {
+			  sec = 0;
+			  min++;
+		  }
+
+		  if(min >= 60) {
+			  min = 0;
+			  hour++;
+		  }
+
+		  if(hour >=24) {
+			  hour = 0;
+		  }
+
+		  updateClockBuffer();
 	  }
 
 	  if (timer2_flag)
 	  {
-		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
+		  setTimer2(25);
+		  if (index_led >= MAX_LED) index_led = 0;
+		  update7SEG(index_led++);
 	  }
 
 
@@ -412,6 +429,15 @@ void update7SEG(int index){
         default:
             break;
     }
+}
+
+
+void updateClockBuffer()
+{
+	led_buffer[0] = hour/10;
+	led_buffer[1] = hour%10;
+	led_buffer[2] = min/10;
+	led_buffer[3] = min%10;
 }
 
 /* USER CODE END 4 */
