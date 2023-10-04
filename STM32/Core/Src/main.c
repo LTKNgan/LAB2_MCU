@@ -117,6 +117,7 @@ int main(void)
 
 	  if (timer2_flag)
 	  {
+		  setTimer2(100);
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  }
 
