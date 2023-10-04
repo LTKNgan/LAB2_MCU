@@ -336,7 +336,7 @@ void update7SEG(int index){
         	// enable led 1 and disable led 0, 2, 3
         	HAL_GPIO_WritePin(GPIOA, EN1_Pin, GPIO_PIN_RESET);
         	HAL_GPIO_WritePin(GPIOA, EN0_Pin|EN2_Pin|EN3_Pin, GPIO_PIN_SET);
-  		  display7SEG(led_buffer[1]);
+        	display7SEG(led_buffer[1]);
             break;
 
         case 2:

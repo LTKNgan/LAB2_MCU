@@ -37,11 +37,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_macro  000162b2  00000000  00000000  0002aeb8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_line   00009918  00000000  00000000  0004116a  2**0
+ 17 .debug_line   00009916  00000000  00000000  0004116a  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_str    00081f7f  00000000  00000000  0004aa82  2**0
+ 18 .debug_str    00081f7f  00000000  00000000  0004aa80  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .comment      00000053  00000000  00000000  000cca01  2**0
+ 19 .comment      00000053  00000000  00000000  000cc9ff  2**0
                   CONTENTS, READONLY
  20 .debug_frame  000026bc  00000000  00000000  000cca54  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
@@ -746,7 +746,7 @@ void update7SEG(int index){
  800052a:	f44f 7150 	mov.w	r1, #832	; 0x340
  800052e:	4819      	ldr	r0, [pc, #100]	; (8000594 <update7SEG+0xbc>)
  8000530:	f000 fc42 	bl	8000db8 <HAL_GPIO_WritePin>
-  		  display7SEG(led_buffer[1]);
+        	display7SEG(led_buffer[1]);
  8000534:	4b18      	ldr	r3, [pc, #96]	; (8000598 <update7SEG+0xc0>)
  8000536:	685b      	ldr	r3, [r3, #4]
  8000538:	4618      	mov	r0, r3
