@@ -112,9 +112,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(100);
-  setTimer2(25);
-  setTimer3(20);
+  setTimer1(1000);
+  setTimer2(250);
+  setTimer3(4);
   updateClockBuffer();
 
   uint8_t letterA[8] = {0x00, 0x3F, 0x7F, 0xCC, 0xCC, 0x7F, 0x3F, 0x00};
@@ -130,7 +130,7 @@ int main(void)
   {
 	  if (timer1_flag)
 	  {
-		  setTimer1(100);
+		  setTimer1(1000);
 		  sec++;
 		  HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 		  if (sec >= 60) {
@@ -151,14 +151,14 @@ int main(void)
 
 	  if (timer2_flag)
 	  {
-		  setTimer2(25);
+		  setTimer2(250);
 		  if (index_led >= MAX_LED) index_led = 0;
 		  update7SEG(index_led++);
 	  }
 
 	  if (timer3_flag)
 	  {
-		  setTimer3(20);
+		  setTimer3(4);
 		  if (index_col >= MAX_LED_MATRIX)
 		  {
 			  index_col = 0;
@@ -244,7 +244,7 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 7999;
+  htim2.Init.Prescaler = 799;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
   htim2.Init.Period = 9;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
@@ -293,7 +293,7 @@ static void MX_GPIO_Init(void)
   HAL_GPIO_WritePin(GPIOB, sm_a_Pin|sm_b_Pin|sm_c_Pin|ROW2_Pin
                           |ROW3_Pin|ROW4_Pin|ROW5_Pin|ROW6_Pin
                           |ROW7_Pin|sm_d_Pin|sm_e_Pin|sm_f_Pin
-                          |sm_g_Pin|ROW0_Pin|ROW1_Pin, GPIO_PIN_SET);
+                          |sm_g_Pin|ROW0_Pin|ROW1_Pin, GPIO_PIN_RESET);
 
   /*Configure GPIO pins : ENM0_Pin ENM1_Pin DOT_Pin RED_LED_Pin
                            EN0_Pin EN1_Pin EN2_Pin EN3_Pin
